@@ -20,10 +20,12 @@ const storeSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserList",
   },
-  products: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "products",
-  },
+  product: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProductList",
+    },
+  ],
   creted: {
     type: Date,
     default: new Date(),

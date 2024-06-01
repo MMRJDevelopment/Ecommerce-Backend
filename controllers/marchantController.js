@@ -9,6 +9,7 @@ async function marchantController(req, res) {
     officialphone,
     address,
     owner,
+    product,
     creted,
     update,
   } = req.body;
@@ -23,6 +24,7 @@ async function marchantController(req, res) {
     officialphone,
     address,
     owner,
+    product,
     creted,
     update,
   });
