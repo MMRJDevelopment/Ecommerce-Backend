@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const marchantList = require("../models/marchantSchema");
 const UserList = require("../models/userSchema");
+const marchantSchema = require("../models/marchantSchema");
 
 async function marchantController(req, res) {
   const {
@@ -38,4 +39,9 @@ async function marchantController(req, res) {
 
   res.json({ success: "congratulations.your aer a be came marchant" });
 }
-module.exports = marchantController;
+async function getallstoreController(req, res) {
+  const data = await marchantSchema.find({});
+  res.send(data);
+}
+
+module.exports = { marchantController, getallstoreController };

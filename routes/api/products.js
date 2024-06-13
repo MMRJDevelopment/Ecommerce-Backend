@@ -3,6 +3,10 @@ const {
   productsController,
   secureProductUploadController,
   createVariant,
+  getAllProducts,
+  nestingProduct,
+  getAllProduct,
+  deleteProduct,
 } = require("../../controllers/productController");
 const router = express.Router();
 const multer = require("multer");
@@ -24,11 +28,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post(
-  "/createProduct",
-  secureProductUploadController,
-  productsController
-);
+// router.post(
+//   "/createProduct",
+//   secureProductUploadController,
+//   productsController
+// );
+router.post("/createProduct", productsController);
 router.post("/createVariant", upload.single("image"), createVariant);
+router.post("/getall", getAllProducts);
+router.post("/all", nestingProduct);
+router.post("/deleteProduct", deleteProduct);
+router.get("/allProduct", getAllProduct);
 
 module.exports = router;

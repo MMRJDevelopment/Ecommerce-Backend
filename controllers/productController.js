@@ -1,7 +1,9 @@
+const { disconnect } = require("mongoose");
 const marchantSchema = require("../models/marchantSchema");
 const productSchema = require("../models/productSchema");
 const ProductList = require("../models/productSchema");
 const UserList = require("../models/userSchema");
+const variantSchema = require("../models/variantSchema");
 const variantList = require("../models/variantSchema");
 const marchantController = require("./marchantController");
 
@@ -29,7 +31,16 @@ async function secureProductUploadController(req, res, next) {
 }
 
 async function productsController(req, res) {
-  const { name, description, store, created, update } = req.body;
+  const {
+    name,
+    description,
+    store,
+    created,
+    update,
+    category,
+    subcategory,
+    variants,
+  } = req.body;
 
   const product = new ProductList({
     name,
@@ -37,6 +48,9 @@ async function productsController(req, res) {
     store,
     created,
     update,
+    category,
+    subcategory,
+    variants,
   });
   product.save();
 
@@ -72,7 +86,7 @@ async function createVariant(req, res) {
     ram,
     size,
     storage,
-    image: `http://localhost:3000/uploads/${req.file.filename}`,
+    // image: `http://localhost:3000/uploads/${req.file.filename}`,
   });
   variant.save();
   await productSchema.findOneAndUpdate(
@@ -82,8 +96,63 @@ async function createVariant(req, res) {
   );
   res.json({ success: "create product variant" });
 }
+async function getAllProducts(req, res) {
+  const { category, discount } = req.body;
+  const findProduct = await productSchema.find({ category });
+  const findVariant = await variantSchema.findById(findProduct[0].variants[2]);
+
+  if (discount.split("%").length == 2) {
+    let productPrice =
+      Number(findVariant.price) -
+      (Number(discount.split("%")[0]) / 100) * Number(findVariant.price);
+
+    const updateVariant = await variantSchema.findByIdAndUpdate(
+      findProduct[0].variants[2],
+      { price: productPrice }
+    );
+    res.send("update price %");
+  } else {
+    let productPrice =
+      Number(findVariant.price) - Number(discount.split("%")[0]);
+    const updateVariant = await variantSchema.findByIdAndUpdate(
+      findProduct[0].variants[2],
+      { price: productPrice }
+    );
+    res.send("update price %");
+  }
+}
+
+async function nestingProduct(req, res) {
+  const product = await productSchema
+    .find({ _id: req.body._id })
+    .populate({
+      path: "variants",
+      select: "_id price product",
+      populate: {
+        path: "product",
+        select: "_id name",
+      },
+    })
+    .select("_id name variants");
+
+  res.send(product);
+}
+
+async function deleteProduct(req, res) {
+  const deleteproduct = await productSchema.findByIdAndDelete(req.body._id);
+}
+
+async function getAllProduct(req, res) {
+  const data = await productSchema.find({}).populate("store");
+  res.send(data);
+}
+
 module.exports = {
   productsController,
   secureProductUploadController,
   createVariant,
+  getAllProducts,
+  nestingProduct,
+  getAllProduct,
+  deleteProduct,
 };

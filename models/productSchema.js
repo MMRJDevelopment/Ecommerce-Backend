@@ -12,6 +12,14 @@ const productSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "StoresList",
   },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "CategoryList",
+  },
+  subcategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SubCategoryList",
+  },
   variants: [
     {
       type: mongoose.Schema.Types.ObjectId,
