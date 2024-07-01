@@ -12,4 +12,20 @@ async function emailVerifiedController(req, res) {
   );
   res.json({ success: "Email verification successfuly done" });
 }
-module.exports = emailVerifiedController;
+async function verificationController(req, res) {
+  const { id } = req.params;
+  const decoded = jwt.verify(id, "mehebuba");
+  console.log(decoded.email);
+  if (decoded) {
+    const updateUser = await UserList.findOneAndUpdate(
+      { email: decoded.email },
+      { emailVerified: true },
+      { new: true }
+    );
+    res.redirect("http://localhost:5173/login");
+  }
+
+  res.json("verifion done");
+}
+
+module.exports = { emailVerifiedController, verificationController };

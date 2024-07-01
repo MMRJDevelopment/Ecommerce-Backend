@@ -86,7 +86,7 @@ async function createVariant(req, res) {
     ram,
     size,
     storage,
-    // image: `http://localhost:3000/uploads/${req.file.filename}`,
+    image: `http://localhost:9000/uploads/${req.file.filename}`,
   });
   variant.save();
   await productSchema.findOneAndUpdate(
@@ -146,6 +146,10 @@ async function getAllProduct(req, res) {
   const data = await productSchema.find({}).populate("store");
   res.send(data);
 }
+async function getAllVariant(req, res) {
+  const data = await variantSchema.find({});
+  res.send(data);
+}
 
 module.exports = {
   productsController,
@@ -155,4 +159,5 @@ module.exports = {
   nestingProduct,
   getAllProduct,
   deleteProduct,
+  getAllVariant,
 };

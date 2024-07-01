@@ -14,7 +14,11 @@ async function loginController(req, res) {
   if (existingEmail.length > 0) {
     bcrypt.compare(password, existingEmail[0].password).then(function (result) {
       if (result) {
-        res.json({ success: "Successfuly login done" });
+        res.send({
+          success: "Login Successful",
+          email: existingEmail[0].email,
+          role: existingEmail[0].role
+        });
       } else {
         res.json({ error: "password is not found" });
       }

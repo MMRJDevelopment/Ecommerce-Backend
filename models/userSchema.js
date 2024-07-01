@@ -14,15 +14,15 @@ const userSchema = mongoose.Schema({
   },
   telePhone: {
     type: String,
-    required: true,
+    // required: true,
   },
   addresOne: {
     type: String,
-    required: true,
+    // required: true,
   },
   addresTow: {
     type: String,
-    required: true,
+    // required: true,
   },
   city: String,
   postCode: String,
@@ -41,5 +41,6 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  token:String,
 });
 module.exports = mongoose.model("UserList", userSchema);

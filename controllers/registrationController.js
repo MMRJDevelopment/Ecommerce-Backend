@@ -32,6 +32,10 @@ async function registration(req, res) {
   if (existingEmail.length > 0) {
     return res.json({ error: "Email already used" });
   }
+  if (!password) {
+    return res.json({ error: "password is required" });
+  }
+  const token = jwt.sign({ email }, "mehebuba");
   bcrypt.hash(password, 10, function (err, hash) {
     const users = UserList({
       fastName,
@@ -45,12 +49,12 @@ async function registration(req, res) {
       division,
       district,
       password: hash,
+      token: email,
     });
     users.save();
-    const token = jwt.sign({ email }, "mehebuba");
-
+    // const token = jwt.sign({ email }, "mehebuba");
     sendEmail(email, "ecommerce", emailTemplate(token));
-    res.json(users);
+    res.json({ success: "Registration done" });
   });
 }
 module.exports = registration;

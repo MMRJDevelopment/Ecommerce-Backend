@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const variantSchema = mongoose.Schema({
   image: {
     type: String,
-    // require: true,
+    require: true,
   },
   color: {
     type: String,

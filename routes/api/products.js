@@ -7,6 +7,7 @@ const {
   nestingProduct,
   getAllProduct,
   deleteProduct,
+  getAllVariant,
 } = require("../../controllers/productController");
 const router = express.Router();
 const multer = require("multer");
@@ -39,5 +40,6 @@ router.post("/getall", getAllProducts);
 router.post("/all", nestingProduct);
 router.post("/deleteProduct", deleteProduct);
 router.get("/allProduct", getAllProduct);
+router.get("/allVariant", getAllVariant);
 
 module.exports = router;
