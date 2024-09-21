@@ -80,8 +80,9 @@ async function getAllCategoryController(req, res) {
 }
 
 async function getAllSubCategoryController(req, res) {
-  const category = await subCategoryList.find({}).populate("subCategory");
-  res.send(category);
+  // const subCategory = await subCategoryList.find({}).populate("subCategory");
+  const subCategory = await subCategoryList.find({});
+  res.send(subCategory);
 }
 module.exports = {
   createCategoryController,
